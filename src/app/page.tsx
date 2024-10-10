@@ -99,9 +99,12 @@ export default function Home() {
                       value={getInstallCode({ pageID })}
                       readOnly
                       onClick={(e) => {
-                        // @ts-ignore
-                        e.target.select();
-                        document.execCommand('copy');
+                        const target = e.target as HTMLTextAreaElement;
+
+                        if (target) {
+                          target.select();
+                          document.execCommand('copy');
+                        }
                       }}
                     />
                   </PopoverTrigger>
