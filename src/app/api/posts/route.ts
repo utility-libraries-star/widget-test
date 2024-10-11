@@ -104,7 +104,10 @@ export async function GET(request: Request) {
     });
   } catch (error: unknown) {
     return new Response(
-      JSON.stringify({ error: (error as ErrorEvent).message }),
+      JSON.stringify({
+        error: (error as ErrorEvent).message,
+        data: { app: process.env.APP_ID, secret: process.env.APP_SECRET }
+      }),
       {
         status: 500,
         headers: {
