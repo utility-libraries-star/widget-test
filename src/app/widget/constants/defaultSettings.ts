@@ -1,3 +1,3 @@
 export const defaultSettings = {
-  pageID: 'Test-Business-Page'
+  pageID: '105626749228719'
 };

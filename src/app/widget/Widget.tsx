@@ -11,11 +11,11 @@ const queryClient = new QueryClient();
 export function Widget({ settings }: { settings: WidgetProps }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <TokenProvider>
-        <SettingsProvider settings={settings}>
+      <SettingsProvider settings={settings}>
+        <TokenProvider>
           <FacebookFeed />
-        </SettingsProvider>
-      </TokenProvider>
+        </TokenProvider>
+      </SettingsProvider>
     </QueryClientProvider>
   );
 }

@@ -14,25 +14,14 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 export function FacebookFeed() {
   const { pageID } = useSettings();
-  const { pages, isTokenLoading, isTokenError } = useToken();
+  const { token, isTokenLoading, isTokenError } = useToken();
 
-  const isNotLoadedToken = !isTokenLoading && !isTokenError && !!pages.length;
+  const isNotLoadedToken = !isTokenLoading && !isTokenError && !!token;
 
   const { data, isError, isLoading } = useQuery({
     queryFn: async () => {
-      const page = pages.find(
-        (page) =>
-          page.id === pageID ||
-          page.name.replaceAll(' ', '').toLowerCase() ===
-            pageID.replaceAll('-', '').toLowerCase()
-      );
-
-      if (!page) {
-        throw new Error('No token');
-      }
-
       const res = await fetch(
-        `https://graph.facebook.com/v21.0/me/posts?fields=shares,message,id,full_picture,created_time,from,reactions.type%28LIKE%29.limit%280%29.summary%281%29.as%28reactions%29,permalink_url,attachments{media,target,description,media_type,title,type,unshimmed_url,url,subattachments},comments.limit%280%29.summary%281%29.as%28comments_count%29,reactions.type%28LIKE%29.limit%280%29.summary%281%29.as%28reactions_like%29,reactions.type%28LOVE%29.limit%280%29.summary%281%29.as%28reactions_love%29,reactions.type%28WOW%29.limit%280%29.summary%281%29.as%28reactions_wow%29,reactions.type%28HAHA%29.limit%280%29.summary%281%29.as%28reactions_haha%29,reactions.type%28SAD%29.limit%280%29.summary%281%29.as%28reactions_sad%29,reactions.type%28ANGRY%29.limit%280%29.summary%281%29.as%28reactions_angry%29,reactions.type%28THANKFUL%29.limit%280%29.summary%281%29.as%28reactions_thankful%29&locale=en&limit=10&access_token=${page.access_token}`
+        `https://graph.facebook.com/v21.0/me/posts?fields=shares,message,id,full_picture,created_time,from,reactions.type%28LIKE%29.limit%280%29.summary%281%29.as%28reactions%29,permalink_url,attachments{media,target,description,media_type,title,type,unshimmed_url,url,subattachments},comments.limit%280%29.summary%281%29.as%28comments_count%29,reactions.type%28LIKE%29.limit%280%29.summary%281%29.as%28reactions_like%29,reactions.type%28LOVE%29.limit%280%29.summary%281%29.as%28reactions_love%29,reactions.type%28WOW%29.limit%280%29.summary%281%29.as%28reactions_wow%29,reactions.type%28HAHA%29.limit%280%29.summary%281%29.as%28reactions_haha%29,reactions.type%28SAD%29.limit%280%29.summary%281%29.as%28reactions_sad%29,reactions.type%28ANGRY%29.limit%280%29.summary%281%29.as%28reactions_angry%29,reactions.type%28THANKFUL%29.limit%280%29.summary%281%29.as%28reactions_thankful%29&locale=en&limit=10&access_token=${token}`
       );
       return (await res.json()) as FacebookFeedResponse;
     },
